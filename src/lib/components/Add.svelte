@@ -17,17 +17,26 @@
 	// TODO Get categories from backend
 	const categories = ['Chicken', 'Beef', 'Pasta', 'Dessert', 'Salad', 'Side', 'Sandwhich', 'Soup'];
 
-	function addCategory() {
-		console.log('add category');
-	}
+	// function addCategory() {
+	// 	console.log('add category');
+	// }
 
-	function onSubmit(e) {
+	async function onSubmit(e) {
 		const formData = new FormData(e.target);
 		const data = Object.fromEntries(formData.entries());
 		data.categories = formData.getAll('categories');
 
 		if (isFormValid(data)) {
-			console.log('ready to submit');
+			const res = await fetch('/api/', {
+				method: 'POST',
+				body: JSON.stringify({
+					foo,
+					bar,
+				}),
+			});
+
+			const json = await res.json();
+			result = JSON.stringify(json);
 		}
 	}
 
@@ -81,7 +90,7 @@
 			{#each categories as category}
 				<FormCheckbox id={category} name="categories">{category}</FormCheckbox>
 			{/each}
-			<Button on:click={addCategory} class="text-xs">Add Category</Button>
+			<!-- <Button on:click={addCategory} class="text-xs">Add Category</Button> -->
 			{#if errors.categories}<FormError message="Please select at least one category." />{/if}
 		</FormGroup>
 		<FormGroup>
