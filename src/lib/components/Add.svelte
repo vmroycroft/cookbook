@@ -27,16 +27,21 @@
 		data.categories = formData.getAll('categories');
 
 		if (isFormValid(data)) {
-			const res = await fetch('/api/', {
+			const res = await fetch('/api/recipes', {
 				method: 'POST',
-				body: JSON.stringify({
-					foo,
-					bar,
-				}),
+				body: JSON.stringify(data),
 			});
 
+			console.log(res);
+
 			const json = await res.json();
-			result = JSON.stringify(json);
+
+			try {
+				result = JSON.parse(json);
+				console.log(result);
+			} catch (err) {
+				console.error(json);
+			}
 		}
 	}
 
@@ -75,16 +80,21 @@
 
 <SectionContainer title="Add" {borderColor} {textColor} {backgroundColor}>
 	<form on:submit|preventDefault={onSubmit}>
+		<!-- Name -->
 		<FormGroup>
 			<FormLabel {textColor}><label for="name">Name</label></FormLabel>
 			<FormInput id="name" />
 			{#if errors.name}<FormError message="Please fill in the recipe name." />{/if}
 		</FormGroup>
+
+		<!-- Author -->
 		<FormGroup>
 			<FormLabel {textColor}><label for="author">Author</label></FormLabel>
 			<FormInput id="author" />
 			{#if errors.author}<FormError message="Please fill in the recipe author." />{/if}
 		</FormGroup>
+
+		<!-- Category -->
 		<FormGroup>
 			<FormLabel {textColor}>Category</FormLabel>
 			{#each categories as category}
@@ -93,11 +103,15 @@
 			<!-- <Button on:click={addCategory} class="text-xs">Add Category</Button> -->
 			{#if errors.categories}<FormError message="Please select at least one category." />{/if}
 		</FormGroup>
+
+		<!-- Ingredients -->
 		<FormGroup>
 			<FormLabel {textColor}><label for="ingredients">Ingredients</label></FormLabel>
 			<FormTextarea id="ingredients" />
 			{#if errors.ingredients}<FormError message="Please fill in the ingredients." />{/if}
 		</FormGroup>
+
+		<!-- Directions -->
 		<FormGroup>
 			<FormLabel {textColor}><label for="directions">Directions</label></FormLabel>
 			<FormTextarea id="directions" />
