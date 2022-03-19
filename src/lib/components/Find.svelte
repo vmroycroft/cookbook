@@ -1,5 +1,5 @@
 <script>
-	import SectionContainer from '../components/common/SectionContainer.svelte';
+	import SectionContainer from '$lib/components/common/SectionContainer.svelte';
 
 	export let recipes;
 

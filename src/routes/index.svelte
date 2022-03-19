@@ -2,7 +2,7 @@
 	export const prerender = true;
 
 	export async function load({ fetch }) {
-		const url = '/api/recipes.json';
+		const url = '/api/recipes';
 		const res = await fetch(url);
 
 		if (res.ok) {
