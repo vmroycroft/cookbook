@@ -1,4 +1,6 @@
 <script>
+	import {RecipeStore} from '../../stores/recipes'
+
 	import SectionContainer from './common/SectionContainer.svelte';
 	import FormGroup from './common/FormGroup.svelte';
 	import FormLabel from './common/FormLabel.svelte';
@@ -15,7 +17,7 @@
 	const errors = { name: false, author: false, categories: false, ingredients: false, directions: false };
 
 	// TODO Get categories from backend
-	const categories = ['Chicken', 'Beef', 'Pasta', 'Dessert', 'Salad', 'Side', 'Sandwhich', 'Soup'];
+	const categories = ['Chicken', 'Beef', 'Pasta', 'Dessert', 'Salad', 'Side', 'Sandwich', 'Soup'];
 
 	// function addCategory() {
 	// 	console.log('add category');
@@ -23,25 +25,18 @@
 
 	async function onSubmit(e) {
 		const formData = new FormData(e.target);
-		const data = Object.fromEntries(formData.entries());
-		data.categories = formData.getAll('categories');
+		const newRecipe = Object.fromEntries(formData.entries());
+		newRecipe.categories = formData.getAll('categories');
 
-		if (isFormValid(data)) {
-			const res = await fetch('/api/recipes', {
+		if (isFormValid(newRecipe)) {
+			const response = await fetch('/api/add', {
 				method: 'POST',
-				body: JSON.stringify(data),
+				body: JSON.stringify(newRecipe),
 			});
 
-			console.log(res);
+			const data = await response.json();
 
-			const json = await res.json();
-
-			try {
-				result = JSON.parse(json);
-				console.log(result);
-			} catch (err) {
-				console.error(json);
-			}
+			RecipeStore.update((recipes) => [data, ...recipes]);
 		}
 	}
 

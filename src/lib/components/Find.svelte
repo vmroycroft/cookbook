@@ -1,7 +1,8 @@
 <script>
-	import SectionContainer from '$lib/components/common/SectionContainer.svelte';
+	import {fade, scale} from 'svelte/transition';
 
-	export let recipes;
+	import {RecipeStore} from '../../stores/recipes'
+	import SectionContainer from '$lib/components/common/SectionContainer.svelte';
 
 	const borderColor = 'border-red-400';
 	const textColor = 'text-red-400';
@@ -9,8 +10,8 @@
 </script>
 
 <SectionContainer title="Find" {borderColor} {textColor} {backgroundColor}>
-	{#each recipes as recipe}
-		<div>{recipe.id} {recipe.name}</div>
+	{#each $RecipeStore as recipe (recipe._id)}
+		<div in:scale out:fade>{recipe._id} {recipe.name}</div>
 	{:else}
 		<p>No recipes</p>
 	{/each}

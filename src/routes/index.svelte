@@ -2,7 +2,7 @@
 	export const prerender = true;
 
 	export async function load({ fetch }) {
-		const url = '/api/recipes';
+		const url = '/api/find';
 		const res = await fetch(url);
 
 		if (res.ok) {
@@ -21,11 +21,14 @@
 </script>
 
 <script>
+	import {RecipeStore} from '../stores/recipes';
 	import Find from '$lib/components/Find.svelte';
 	import View from '$lib/components/View.svelte';
 	import Add from '$lib/components/Add.svelte';
 
 	export let recipes;
+
+	RecipeStore.set(recipes);
 </script>
 
 <svelte:head>
@@ -33,7 +36,7 @@
 </svelte:head>
 
 <section class="h-screen p-2 gap-2 columns-1 lg:columns-3">
-	<Find {recipes} />
+	<Find />
 	<View />
 	<Add />
 </section>
